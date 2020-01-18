@@ -1,11 +1,11 @@
 <template>
-   <div id="app">
-     <h1>{{ title }}</h1>
-    <form method="post">
+   <div>
      <editor id="document"
-       api-key="no-api-key"
-       :initialValue="content"
+       api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
+       :initialValue="InitalContent"
        v-model="content"
+        model-events="change keydown blur focus paste"
+        @onKeyUp="submit"
        :init="{
          height: 500,
          menubar: true,
@@ -20,52 +20,45 @@
            bullist numlist outdent indent | removeformat | help'
        }"
        ></editor>
-       <button type="submit" @click.prevent="submit">Valider</button>
-       </form>
    </div>
 </template>
 
 <script>
  import Editor from '@tinymce/tinymce-vue'
 
-
  export default {
-   name: 'document',
+   name: 'tinymce',
    components: {
      'editor': Editor
+   },
+   props:{
+      InitalContent: {type: String, default: ""},
+      uuid: {type: String}
    },
   data: function () {
     return {
       content: "",
-      title: ""
+      update: true
     }
   },
    mounted () {
-        this.$http.get('http://localhost:3000/documents/1?test=1',{
-          headers: {
-            'Authorization': 'Bearer test_TOKEN123'
-          }
-        }).then(
-        (response) => {
-             console.log("sucess", response)
-          response.json().then((data) => {
-            this.content = data['content']
-            this.title = data['titre']
-          })
-        }, 
-        (response) => {
-          console.log("error", response)
-        })
+     this.content = this.InitalContent;
     },
    methods: {
      submit: function () { 
-       this.$http.post('http://localhost:3000/documents/1?test=1', { 'content' : this.content },{
+       this.update = false;
+       this.$http.put('http://localhost:3000/document/', 
+       {
+         'content' : this.content,
+         'uuid' : this.uuid
+       }
+       ,{
           headers: {
             'Authorization': 'Bearer test_TOKEN123'
           }
         }).then(
-        (response) => {
-          console.log("sucess", response)
+        () => {
+          this.update = true;
         }, 
         (response) => {
           console.log("error", response)
@@ -77,14 +70,6 @@
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
 
     
