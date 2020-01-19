@@ -1,14 +1,16 @@
 <template>
    <div>
-     <editor id="document"
+     <editor id="document" ref="tm"
        api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
        :initialValue="InitalContent"
        v-model="content"
         model-events="change keydown blur focus paste"
         @onKeyUp="submit"
+        
        :init="{
          height: 500,
          menubar: true,
+         extended_valid_elements:'p[class:{$uid}]',
          plugins: [
            'advlist autolink lists link image charmap print preview anchor',
            'searchreplace visualblocks code fullscreen',
@@ -42,11 +44,16 @@
     }
   },
    mounted () {
+     let recaptchaScript = document.createElement('script')
+      recaptchaScript.setAttribute('src', 'TinyParser.js')
+      document.head.appendChild(recaptchaScript)
      this.content = this.InitalContent;
     },
    methods: {
      submit: function () { 
        this.update = false;
+        console.log(this.content)
+
        this.$http.put('http://localhost:3000/document/', 
        {
          'content' : this.content,
