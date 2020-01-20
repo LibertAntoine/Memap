@@ -51,6 +51,7 @@
    methods: {
      submit: function () { 
        this.update = false;
+       console.log(this.content)
         if(this.content == "") {
           this.content = '<p id="' + this.$uuid.v4() + '" class="mce"></p>'
         }
@@ -79,7 +80,8 @@
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
       this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
     },
-    identifyBLock: function (e) {
+    identifyBlock: function (e) {
+      console.log('canard')
       e.target.dom.setAttribs(e.newBlock, {'id' : this.$uuid.v4(), 'class' : 'mce'} );
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
     },

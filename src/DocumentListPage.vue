@@ -6,7 +6,7 @@
  import DocumentList from './components/DocumentList.vue'
  export default {
    name: 'DocumentListPage',
-    componants:{
+    components:{
         'documentList': DocumentList,
     }
  }

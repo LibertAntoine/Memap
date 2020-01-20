@@ -6,7 +6,7 @@
  import Document from './components/Document.vue';
  export default {
    name: 'documentPage',
-    componants:{
+    components:{
         Document,
     }
  }
