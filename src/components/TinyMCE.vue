@@ -3,14 +3,13 @@
      <editor id="document" ref="tm"
        api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
        :initialValue="InitalContent"
-       v-model="content"
+        v-model="content"
         model-events="change keydown blur focus paste"
         @onKeyUp="submit"
-        
+        @onInit="initEventEditor"
        :init="{
          height: 500,
          menubar: true,
-         extended_valid_elements:'p[class:{$uid}]',
          plugins: [
            'advlist autolink lists link image charmap print preview anchor',
            'searchreplace visualblocks code fullscreen',
@@ -21,6 +20,7 @@
            alignleft aligncenter alignright alignjustify | \
            bullist numlist outdent indent | removeformat | help'
        }"
+
        ></editor>
    </div>
 </template>
@@ -31,7 +31,7 @@
  export default {
    name: 'tinymce',
    components: {
-     'editor': Editor
+     'editor': Editor,
    },
    props:{
       InitalContent: {type: String, default: ""},
@@ -43,16 +43,17 @@
       update: true
     }
   },
-   mounted () {
-     let recaptchaScript = document.createElement('script')
-      recaptchaScript.setAttribute('src', 'TinyParser.js')
-      document.head.appendChild(recaptchaScript)
+   created() {
      this.content = this.InitalContent;
+    },
+    mounted() {
     },
    methods: {
      submit: function () { 
        this.update = false;
-        console.log(this.content)
+        if(this.content == "") {
+          this.content = '<p id="' + this.$uuid.v4() + '" class="mce"></p>'
+        }
 
        this.$http.put('http://localhost:3000/document/', 
        {
@@ -70,7 +71,27 @@
         (response) => {
           console.log("error", response)
         })
+    },
+
+
+
+    initEventEditor: function () {
+      this.$refs.tm.editor.once("newblock", this.identifyBlock)
+      this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
+    },
+    identifyBLock: function (e) {
+      e.target.dom.setAttribs(e.newBlock, {'id' : this.$uuid.v4(), 'class' : 'mce'} );
+      this.$refs.tm.editor.once("newblock", this.identifyBlock)
+    },
+    identifyPaste: function (e) {
+      let elements = e.node.getElementsByTagName("*")
+      for(var i = 0; i < elements.length; i++) {
+      elements[i].setAttribute('id', this.$uuid.v4())
+      elements[i].setAttribute('class', 'mce')
+      this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
+      }
     }
+
    }
 
  }

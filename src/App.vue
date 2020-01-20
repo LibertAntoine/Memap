@@ -6,9 +6,15 @@
 </template>
 
 <script>
+
  export default {
    name: 'app',
- }
+    data: function () {
+    return {
+        v4: this.$uuid.v4()
+    };
+  }
+ };
 </script>
 
 <style>

@@ -6,9 +6,14 @@ import Document from './components/Document.vue';
 import tinyMCE from './components/TinyMCE.vue';
 import DocumentList from './components/DocumentList.vue';
 import DocumentItem from './components/DocumentItem.vue';
+import UUID from 'vue-uuid';
+
+
+
 import LoadScript from 'vue-plugin-load-script';
 import SuiVue from 'semantic-ui-vue'; 
 
+Vue.use(UUID);
 Vue.use(VueResource)
 Vue.use(SuiVue);
 Vue.use(LoadScript);
