@@ -20,7 +20,7 @@
 
  export default {
    name: 'document',
-   componants:{
+   components:{
      tinymce
    },
   data: function () {
