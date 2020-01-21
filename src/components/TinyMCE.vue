@@ -1,11 +1,19 @@
 <template>
    <div>
+    <iframe id="inlineFrameExample"
+        title="Inline Frame Example"
+        width="300"
+        height="200"
+        src="https://fr.wikipedia.org/wiki/Trait_italien#footer">
+    </iframe>
+
      <editor id="document" ref="tm"
        api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
        :initialValue="InitalContent"
         v-model="content"
         model-events="change keydown blur focus paste"
         @onKeyUp="submit"
+        @onKeyDown="checkRef"
         @onInit="initEventEditor"
        :init="{
          height: 500,
@@ -49,9 +57,9 @@
     mounted() {
     },
    methods: {
+
      submit: function () { 
        this.update = false;
-       console.log(this.content)
         if(this.content == "") {
           this.content = '<p id="' + this.$uuid.v4() + '" class="mce"></p>'
         }
@@ -73,6 +81,22 @@
           console.log("error", response)
         })
     },
+    checkRef: function (e) {
+      if(e.keyCode === 13) {
+        let urlRegex = /((https?):\/\/[a-z0-9A-Z/:%_+.,?!@&=-]+#[a-z0-9A-Z/:%_+.,?!@&=-]+)/;
+        console.log('canrd')
+       this.$http.get('https://fr.wikipedia.org/wiki/Trait_italien#footer').then(
+        (response) => {
+          console.log(response)
+        }, 
+        (response) => {
+          console.log("error", response)
+        })
+        if(this.content.search(urlRegex) != -1) {
+          //this.content = this.content.replace(urlRegex, "canard:$1");
+        }
+      }
+    },
 
 
 
@@ -81,7 +105,6 @@
       this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
     },
     identifyBlock: function (e) {
-      console.log('canard')
       e.target.dom.setAttribs(e.newBlock, {'id' : this.$uuid.v4(), 'class' : 'mce'} );
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
     },
