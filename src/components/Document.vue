@@ -1,16 +1,22 @@
 <template>
 
 <div>
-   <router-link class="ui button" tag="button" :to="{name:'DocumentList'}">Retour à la liste des documents</router-link>
-   <div v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><h2> {{title}} <button class="ui button" v-if="hover" @click="renameState = true">Modifier</button></h2></div>
-   <div v-else><input v-model="titleRename" @keypress.enter="rename" /><button class="ui button" @click="noRemane">Annuler</button></div>
-   <div v-if="!edition">
+    <div id="menu-option">
+     <router-link id="btn-menu" class="ui button left labeled icon" tag="button" :to="{name:'DocumentList'}"><i class="left arrow icon"></i>Retour à la liste des documents</router-link>
+    </div>
+   <div class='btn-title' v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><h2> {{title}} <button class="ui button" v-if="hover" @click="renameState = true">Modifier</button></h2></div>
+   <div class='btn-title' v-else><input v-model="titleRename" @keypress.enter="rename" /><button class="ui button" @click="noRemane">Annuler</button></div>
+   <div class='content' v-if="!edition">
      <tinymce :InitalContent="content" :uuid="uuid"></tinymce>
-    <button class="ui button" @click="endEdit">Terminer la modification</button>
+      <div class="edit-option">
+        <button class="ui button primary btn-edit" @click="endEdit">Terminer la modification</button>
+      </div>
    </div>
-   <div v-else >
-     <div v-html="content"></div>
-     <button class="ui button" @click="edition = false">Modifier le document</button>
+   <div class='content' v-else>
+     <div id="content-view" v-html="content"></div>
+     <div class="edit-option">
+        <button class="ui button primary btn-edit" @click="edition = false">Modifier le document</button>
+     </div>
    </div>
 </div>
 
@@ -70,7 +76,6 @@
             }
           }).then(
           () => {
-              console.log("title bien modifié")
               this.renameState = false;
           }, 
           (response) => {
@@ -82,7 +87,7 @@
         this.titleRename = this.title;
         this.renameState = false;
     },
-          endEdit: function () {
+        endEdit: function () {
         this.loadDocument();
         this.edition = true;
     }
@@ -92,5 +97,31 @@
 </script>
 
 <style>
+.content {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 20px;
+  text-align: left;
+}
+.btn-edit {
+  position:absolute;
+  right: 7%
+}
 
+.edit-option {
+  margin-top : 15px;
+}
+
+#menu-option {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align:left;
+  padding-left: 20px;
+}
+
+#content-view {
+  border: 1px solid rgba(128, 128, 128, 0.185);
+  padding: 20px;
+  border-radius: 5px; 
+}
 </style>

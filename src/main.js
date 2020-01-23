@@ -9,7 +9,9 @@ Vue.use(UUID);
 Vue.use(VueResource);
 Vue.use(SuiVue);
 
+
 Vue.config.productionTip = false
+
 
 import routes from './router';
 const router = new VueRouter({

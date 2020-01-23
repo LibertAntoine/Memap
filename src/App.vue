@@ -1,6 +1,6 @@
 <template>
    <div id="app">
-      <div><p>Bienvenue sur votre Mock.</p></div>
+      <div><h1>Bienvenue sur votre MEMAP</h1></div>
       <router-view />
    </div>
 </template>

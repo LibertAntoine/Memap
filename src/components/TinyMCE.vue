@@ -1,12 +1,5 @@
 <template>
    <div>
-    <iframe id="inlineFrameExample"
-        title="Inline Frame Example"
-        width="300"
-        height="200"
-        src="https://fr.wikipedia.org/wiki/Trait_italien#footer">
-    </iframe>
-
      <editor id="document" ref="tm"
        api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
        :initialValue="InitalContent"
@@ -18,23 +11,28 @@
        :init="{
          height: 500,
          menubar: true,
+         content_css : '/mce_style.css',
+         extended_value_elements:'div[refUrl|refId]',
+         importcss_append: true,
          plugins: [
            'advlist autolink lists link image charmap print preview anchor',
-           'searchreplace visualblocks code fullscreen',
-           'insertdatetime media table paste code help wordcount'
+           'searchreplace visualblocks code fullscreen noneditable',
+           'insertdatetime media table paste code help wordcount importcss'
          ],
          toolbar:
            'undo redo | formatselect | bold italic backcolor | \
            alignleft aligncenter alignright alignjustify | \
            bullist numlist outdent indent | removeformat | help'
        }"
-
        ></editor>
    </div>
 </template>
 
 <script>
  import Editor from '@tinymce/tinymce-vue'
+ import loader from '../assets/loader.gif'
+ import '../../public/mce_style.css'
+
 
  export default {
    name: 'tinymce',
@@ -48,7 +46,8 @@
   data: function () {
     return {
       content: "",
-      update: true
+      update: true,
+      loader: loader
     }
   },
    created() {
@@ -80,20 +79,43 @@
         (response) => {
           console.log("error", response)
         })
+
     },
     checkRef: function (e) {
       if(e.keyCode === 13) {
-        let urlRegex = /((https?):\/\/[a-z0-9A-Z/:%_+.,?!@&=-]+#[a-z0-9A-Z/:%_+.,?!@&=-]+)/;
-        console.log('canrd')
-       this.$http.get('https://fr.wikipedia.org/wiki/Trait_italien#footer').then(
+        let urlRegex = /(https?:\/\/[a-z0-9A-Z/:%_+.,?!@&=-]+)#([a-z0-9A-Z/:%_+.,?!@&=-]+)/;
+        var ref = this.content.match(urlRegex);
+        if(ref != null) {
+        var loader = this.$refs.tm.editor.dom.create('img', {'src' : this.loader, 'height' : '100'})
+        let element = this.$refs.tm.editor.dom.$('p:contains("' + ref[0] + '")')
+        element.replaceWith(loader)
+        console.log(ref)
+        this.$http.post('http://localhost:3000/reference',
+        {
+         'uuidPage' : this.uuid,
+         'url' : ref[1],
+         'idRef' : ref[2],
+        }
+       ,{
+          headers: {
+            'Authorization': 'Bearer test_TOKEN123'
+          }
+        }).then(
         (response) => {
-          console.log(response)
+          var reference;
+          if(response.body.state == 'noUrl') {
+            reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noUrl mceNonEditable', 'contenteditable' : 'false'}, response.body.message)
+          } else if (response.body.state == 'noIdRef') {
+            reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noIdRef mceNonEditable', 'contenteditable' : 'false'}, response.body.message) 
+          } else {
+            reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce ref mceNonEditable', 'contenteditable' : 'false'}, response.body.content)
+          }
+          loader.replaceWith(reference);
+          this.submit()
         }, 
         (response) => {
           console.log("error", response)
         })
-        if(this.content.search(urlRegex) != -1) {
-          //this.content = this.content.replace(urlRegex, "canard:$1");
         }
       }
     },
@@ -122,7 +144,15 @@
  }
 </script>
 
+<!-- See also public/mce_style.css for tinyMCE content style configuration -->
 <style>
+.document {
+  margin: 30px;
+  width: 80%;
+}
+
+
+
 </style>
 
     

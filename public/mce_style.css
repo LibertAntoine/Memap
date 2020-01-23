@@ -1,0 +1,30 @@
+.mce {
+ font-size: 20px;
+}
+
+.noIdRef {
+    background-color: orange;
+    border: 1.5px solid grey;
+    border-radius: 10px; 
+    margin : 50px, 20px, 50px, 20px;
+    padding : 20px;
+    width: 70%;
+}
+
+
+
+.noIdRef {
+    background-color: orange;
+    border: 1.5px solid grey;
+    border-radius: 10px; 
+    margin : 50px, 20px, 50px, 20px;
+    padding : 20px;
+    width: 70%;
+}
+
+.ref {
+    border: 1.5px solid rgba(168, 168, 168, 0.322);
+    border-radius: 10px; 
+    margin : 50px, 20px, 50px, 20px;
+    padding : 20px;
+}
