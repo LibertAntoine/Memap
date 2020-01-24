@@ -1,7 +1,7 @@
 <template>
 	<div class="children-container">
 		<div v-for="(neuron, id) in neurons" :key="id">
-			<Neuron :neuron="neuron"></Neuron>
+			<Neuron :uuid-neuron="neuron.neuronUUID"></Neuron>
 		</div>
 	</div>
 </template>
@@ -14,7 +14,12 @@ export default {
 	components: {
 		Neuron
 	},
-	props: ['neurons']
+	props: ['neurons'],
+	methods: {
+		logClick() {
+			console.log('Registering click')
+		}
+	}
 }
 </script>
 

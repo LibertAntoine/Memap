@@ -1,7 +1,7 @@
 <template>
 	<div class="friends-container">
 		<div v-for="(neuron, id) in neurons" :key="id">
-			<Neuron :neuron="neuron"></Neuron>
+			<Neuron :uuid-neuron="neuron.neuronUUID"></Neuron>
 		</div>
 	</div>
 </template>

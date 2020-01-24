@@ -3,6 +3,7 @@ import DocumentPage from './DocumentPage.vue';
 import DocumentListPage from './DocumentListPage.vue';
 
 import NetworkPage from './views/NetworkPage.vue';
+import TestPage from './views/TestPage.vue';
 
 const routes = [
 
@@ -12,9 +13,9 @@ const routes = [
     name: 'root',
   }, 
   {
-    path: '/Network',
+    path: '/Network/:uuidNeuron',
     component:  NetworkPage,
-    name: 'Network'
+    name: 'NetworkPage'
   }, 
   {
     path: '/Document',
@@ -25,6 +26,11 @@ const routes = [
     path: '/Document/:id',
     component:  DocumentPage,
     name: 'Document',
+  },
+  {
+    path: '/Test',
+    component:  TestPage,
+    name: 'TestPage',
   },
 
   {
