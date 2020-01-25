@@ -4,7 +4,9 @@
 			<div class="box-icon-container">
 				<div class="icon">{{ icon }}</div>
 			</div>
-			<div v-if="open" class="box-title-container">{{ title }}</div>
+			<div v-if="open" class="box-title-container">
+				<div class="box-title">{{ title }}</div>
+			</div>
 		</div>
 		<div class="box-content">
 			<slot></slot>
@@ -36,6 +38,7 @@ export default {
 		position: absolute;
 		width: 106%;
 		left: -7px;
+		box-shadow: 0 1px 10px #0000003d;
 
 		.box-icon-container {
 			position: relative;
@@ -52,13 +55,22 @@ export default {
 				display: table-cell;
 				line-height: 50px;
 				font-size: 1.5em;
+				box-shadow: 0 1px 10px #00000070;
 			}
 		}
 		.box-title-container {
 			text-align: center;
 			vertical-align: middle;
-			display: table-cell;
-			place-self: stretch
+			place-self: stretch;
+			display: grid;
+			padding-left: 25px;
+
+			.box-title {
+ 				justify-self: start;
+				text-align: left;
+				align-self: center;
+				font-size: 1.2em;
+			}
 		}
 	}
 

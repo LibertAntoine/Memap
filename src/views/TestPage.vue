@@ -1,8 +1,8 @@
 <template>
 	<div class="test-container">
-		<BoxSelection />
-		<BoxSelection />
-		<BoxSelection />
+		<BoxSelection :uuid-neuron="'8f712c97-87de-466d-922e-d6da230f54e2'"/>
+		<!-- <BoxSelection /> -->
+		<!-- <BoxSelection /> -->
 	</div>
 </template>
 

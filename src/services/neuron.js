@@ -14,6 +14,23 @@ export default {
 			});
 		})
 	},
+	removeTag(uuidNeuron, tagName) {
+		return new Promise((resolve, reject) => {
+		Api().delete(`/neuron/${uuidNeuron}`,
+			{ 
+				data: {
+					tag: tagName
+				}
+			})
+			.then(response => {
+				resolve(response)
+			})
+			.catch(err => {
+				console.log(err);
+				reject(err)
+			});
+		})
+	},
 	renameNeuron(uuidNeuron, newName) {
 		return new Promise((resolve, reject) => {
 		Api().patch(`/neuron/${uuidNeuron}`,
@@ -32,6 +49,18 @@ export default {
 	toggleSelection(uuidNeuron) {
 		return new Promise((resolve, reject) => {
 		Api().put(`/neuron/${uuidNeuron}/toggleselect`)
+			.then(response => {
+				resolve(response)
+			})
+			.catch(err => {
+				console.log(err);
+				reject(err)
+			});
+		})
+	},
+	toggleFavorite(uuidNeuron) {
+		return new Promise((resolve, reject) => {
+		Api().put(`/neuron/${uuidNeuron}/togglefavorite`)
 			.then(response => {
 				resolve(response)
 			})
