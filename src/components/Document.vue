@@ -42,6 +42,7 @@
   },
    mounted () {
      this.loadDocument();
+     
     },
    methods: {
      loadDocument: function () {
