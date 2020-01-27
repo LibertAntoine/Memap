@@ -11,8 +11,8 @@
        :init="{
          height: 500,
          menubar: true,
-         content_css : '/mce_style.css',
-         extended_value_elements:'div[refUrl|refId]',
+         content_css : '/mce_style.css, https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css',
+         extended_value_elements:'div[data-options], ref',
          importcss_append: true,
          plugins: [
            'advlist autolink lists link image charmap print preview anchor',
@@ -52,14 +52,20 @@
   },
    created() {
      this.content = this.InitalContent;
-     
     },
     mounted() {
+
     },
    methods: {
 
      submit: function () { 
        this.update = false;
+       let refRegex = /<div ref/g;
+       //[a-z0-9A-Z/:%_+.,?!<> @&=-]+<div class="reEnd"><\/div><\/div>
+       //let copyContent = this.content;
+        var refs = this.content.match(refRegex);
+       console.log(refs)
+       console.log(this.content)
         if(this.content == "") {
           this.content = '<p id="' + this.$uuid.v4() + '" class="mce"></p>'
         }
@@ -83,19 +89,77 @@
 
     },
     checkRef: function (e) {
-      if(e.keyCode === 13) {
-        let urlRegex = /(https?:\/\/[a-z0-9A-Z/:%_+.,?!@&=-]+)#([a-z0-9A-Z/:%_+.,?!@&=-]+)/;
-        let refRegex = /\/([a-z0-9A-Z:%_+.,?!@&=-]+)#/;
-        var ref = this.content.match(urlRegex);
-        if(ref != null) {
-        var loader = this.$refs.tm.editor.dom.create('img', {'src' : this.loader, 'height' : '100'})
-        let element = this.$refs.tm.editor.dom.$('p:contains("' + ref[0] + '")')
-        element.replaceWith(loader)
-        console.log(ref)
-        if(ref[0].match(window.location.origin + '/Document/')) {
-          console.log("intern")   
+    if(e.keyCode === 13) {
+       this.checkRef2()
+      }
+    },
+
+     checkRef2 : function () {
+        let urlRegex = /(https?:\/\/[a-z0-9A-Z/:%_+.,?!@&=-]+)#([a-z0-9A-Z/:%_+.,?!@&=-]+)/g;
+        var refs = [...this.content.matchAll(urlRegex)];
+        for (const ref of refs) {
+          var loader = this.$refs.tm.editor.dom.create('img', {'src' : this.loader, 'height' : '100'})
+          let element = this.$refs.tm.editor.dom.$('p:contains("' + ref[0] + '")')
+          element.replaceWith(loader);
+          if(ref[0].match(window.location.origin + '/Document/')) { 
+            this.searchIntern(loader, ref)
+          } else {
+            this.searchExtern(loader, ref)
+          }
+        }
+    },
+
+    createNoUrlRef: function (ref, response) {
+      return this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noUrl mceNonEditable', 'contenteditable' : 'false'}, response.body.message)
+    },
+    createNoIdRef: function (ref, response) {
+      return this.$refs.tm.editor.dom.create('ref', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noIdRef mceNonEditable', 'contenteditable' : 'false'}, response.body.message) 
+    },
+    createRef: function (ref, response) {
+      var urlDisplay = this.$refs.tm.editor.dom.create('div', {'class' : 'urldisplay no-hover'}, '<p class="urlButton"></p>');
+              var urlLink = this.$refs.tm.editor.dom.create('button', {'class' : 'ui button refSource refButton'}, '#' + ref[1]);
+              var suppButton = this.$refs.tm.editor.dom.create('button', {'class' : 'ui button refSupButton refButton'}, '<i class="x icon"></i>');
+              
+              this.$refs.tm.editor.dom.bind(suppButton, 'click', (e) => {
+                e.toElement.parentNode.parentNode.parentNode.remove();
+              });
+              this.$refs.tm.editor.dom.bind(urlLink, 'click', () => {window.open(ref[0])
+              });
+              urlDisplay.firstChild.appendChild(urlLink);
+              urlDisplay.firstChild.appendChild(suppButton);
+              
+              var visionDisplay = this.$refs.tm.editor.dom.create('div', {'class' : ' versionDisplay no-hover'});
+        
+              if(!response.body.updated) {
+                  visionDisplay.classList.add('blue');
+              } else {
+                  visionDisplay.classList.add('orange');
+                  this.$refs.tm.editor.dom.bind(visionDisplay, 'click', () => {
+                      console.log('hello');
+                  });
+              }
+              
+              var referencetext = this.$refs.tm.editor.dom.create('div', {'class' : 'referenceText'}, response.body.content);
+              var referenceContent = this.$refs.tm.editor.dom.create('div', {'data-refurl' : ref[1], 'data-refid' : ref[2], 'class': 'mce ref mceNonEditable', 'contenteditable' : 'false'})
+              var referenceEnd = this.$refs.tm.editor.dom.create('div', {'class' : 'refEnd'})
+              this.$refs.tm.editor.dom.bind(referenceContent, 'mouseenter', (e) => {
+                e.toElement.childNodes[0].classList.toggle('no-hover');
+                e.toElement.childNodes[1].classList.toggle('no-hover');
+              });
+              this.$refs.tm.editor.dom.bind(referenceContent, 'mouseleave', (e) => {
+                e.fromElement.childNodes[0].classList.toggle('no-hover');
+                e.fromElement.childNodes[1].classList.toggle('no-hover');
+              });
+              referenceContent.appendChild(urlDisplay);
+              referenceContent.appendChild(visionDisplay);
+              referenceContent.appendChild(referencetext);
+              referenceContent.appendChild(referenceEnd);
+              return referenceContent;
+       },
+
+    searchIntern: function(loader, ref) {
+          let refRegex = /\/([a-z0-9A-Z:%_+.,?!@&=-]+)#/;
           var idPageRef = ref[0].match(refRegex);
-          console.log(idPageRef)
           this.$http.post('http://localhost:3000/reference/intern',
           {
           'uuidPage' : this.uuid,
@@ -109,58 +173,45 @@
             }
           }).then(
           (response) => {
-            var reference;
-            if(response.body.state == 'noUrl') {
-              reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noUrl mceNonEditable', 'contenteditable' : 'false'}, response.body.message)
-            } else if (response.body.state == 'noIdRef') {
-              reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noIdRef mceNonEditable', 'contenteditable' : 'false'}, response.body.message) 
-            } else {
-              reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce ref mceNonEditable', 'contenteditable' : 'false'}, response.body.content)
-            }
-            loader.replaceWith(reference);
-            this.submit()
+            this.addReference(loader, ref, response)
           }, 
           (response) => {
             console.log("error", response)
           })
-        } else {
+    },
+
+    searchExtern: function(loader, ref) {
           this.$http.post('http://localhost:3000/reference',
           {
           'uuidPage' : this.uuid,
           'url' : ref[1],
           'idRef' : ref[2],
           }
-        , {
+         ,{
             headers: {
               'Authorization': 'Bearer test_TOKEN123'
             }
           }).then(
           (response) => {
-            var reference;
-            if(response.body.state == 'noUrl') {
-              reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noUrl mceNonEditable', 'contenteditable' : 'false'}, response.body.message)
-            } else if (response.body.state == 'noIdRef') {
-              reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce noIdRef mceNonEditable', 'contenteditable' : 'false'}, response.body.message) 
-            } else {
-              reference = this.$refs.tm.editor.dom.create('div', {'refUrl' : ref[1], 'refId' : ref[2], 'class': 'mce ref mceNonEditable', 'contenteditable' : 'false'}, response.body.content)
-            }
-            loader.replaceWith(reference);
-            this.submit()
+            this.addReference(loader, ref, response)
           }, 
           (response) => {
             console.log("error", response)
           })
-        }
-        
-
-
-
-
-        }
-      }
     },
 
-
+    addReference(loader, ref, response) {
+            var reference;
+            if(response.body.state == 'noUrl') {
+              reference = this.createNoUrlRef(ref, response)
+            } else if (response.body.state == 'noIdRef') {
+              reference = this.createNoIdRef(ref, response)
+            } else {
+              reference = this.createRef(ref, response)
+            }
+            loader.replaceWith(reference);
+            this.submit()
+    },
 
     initEventEditor: function () {
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
@@ -190,9 +241,6 @@
   margin: 30px;
   width: 80%;
 }
-
-
-
 </style>
 
     
