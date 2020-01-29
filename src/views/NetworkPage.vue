@@ -36,6 +36,7 @@ export default {
 
 	.network-container {
 		grid-column-start: 2;
+		height: 95%;
 	}
 }
 </style>

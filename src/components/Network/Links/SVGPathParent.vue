@@ -2,7 +2,7 @@
 	<div v-if="display">
 		<svg preserveAspectRatio="none" :style="computeStyle" :width="width" :height="height" xmlns="http://www.w3.org/2000/svg">
 			<g @contextmenu.prevent="$emit('contextmenu', parent.parentUUID, $event)" v-for="(parent, id) in parents" :key="id" >
-				<path :d="path(parent.coords)" stroke-width="2" vector-effect="non-scaling-stroke" stroke="black" fill="transparent"/>
+				<path :d="path(parent.coords)" stroke-width="1" vector-effect="non-scaling-stroke" stroke="#7fa3ff" fill="transparent"/>
 				<path :d="path(parent.coords)" stroke-width="5" vector-effect="non-scaling-stroke" stroke="transparent" fill="transparent"/>
 			</g>
 		</svg>

@@ -1,6 +1,6 @@
 <template>
 	<div class="box-selection-container">
-		<vue-draggable-resizable :resizable="false" :x="50" :y="300" :drag-handle="'.box-header'" :enable-native-drag="true">
+		<vue-draggable-resizable :resizable="false" :x="50" :y="130" :drag-handle="'.box-header'" :enable-native-drag="true">
 			<Box :title="'Selection'" :font-awesome-icon="'thumbtack'">
 				<Neuron v-for="(uuid, id) in selected" :key="id" :uuid-neuron="uuid"></Neuron>
 			</Box>

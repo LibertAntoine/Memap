@@ -12,10 +12,3 @@ export default {
 	props: [ 'toggled' ]
 }
 </script>
-
-<style lang="less">
-.ui.button.selected {
-	background-color: blue;
-	color: white;
-}
-</style>

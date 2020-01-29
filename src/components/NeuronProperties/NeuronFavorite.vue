@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="button-favorite">
 		<button class="circular ui icon button" :class="{ favorite: toggled }">
 			<i class="icon star"></i>
 		</button>
@@ -14,8 +14,10 @@ export default {
 </script>
 
 <style lang="less">
-.ui.button.favorite {
-	background-color: darkorange;
-	color: white;
+.button-favorite {
+	.ui.button.favorite {
+		background-color: darkorange !important;
+		color: white !important;
+	}
 }
 </style>

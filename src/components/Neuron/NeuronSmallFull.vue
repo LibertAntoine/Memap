@@ -4,11 +4,11 @@
 		<router-link :to="{ name: 'NetworkPage', params: {uuidNeuron} }" tag="a" @dblclick.native.prevent event="click">
 			<drop @drop="handleDrop" @dragover="handleDragEnter" @dragleave="handleDragLeave" @dragenter="handleDragEnter">
 				<div class="neuron-content-container" :style="{ backgroundColor: neuronColor, borderColor: (this.neuron && this.neuron.selected) ? 'red' : neuronColor  }" :class="{ dropzone: isValidDropZone, 'no-dropzone': isForbidenDropZone }">
-					<div class="neuron-icon-container">
+					<div v-if="isItFontAwesome || iconLink" class="neuron-icon-container">
 						<div v-if="isItFontAwesome">
 							<i class="icon" :class="fontAwesomeIcon"></i>
 						</div>
-						<img v-else :src="iconLink" alt="">
+						<img v-else-if="iconLink" :src="iconLink" alt="">
 					</div>
 					<div class="neuron-name-container">
 						<input v-if="inputName" @keypress.enter="rename" @focusout="rename" type="text" v-model="neuron.neuron.name">
@@ -20,12 +20,21 @@
 			</drop>
 			</router-link>
 		<drag class="drag-handle" @drag="updateDrag" @dragend="stopDragging" @dragstart="dragLine" :transfer-data="{ type:'parent', uuid: uuidNeuron }">
+			<template slot="image">
+				<div class="handle handle-parent"></div>
+			</template>
 			<div class="handle handle-parent"></div>
 		</drag>
 		<drag class="drag-handle" @drag="updateDrag" @dragend="stopDragging" @dragstart="dragLine" :transfer-data="{ type:'children', uuid: uuidNeuron }">
+			<template slot="image">
+				<div class="handle handle-children"></div>
+			</template>
 			<div class="handle handle-children"></div>
 		</drag>
 		<drag class="drag-handle" @drag="updateDrag" @dragend="stopDragging" @dragstart="dragLine" :transfer-data="{ type:'friend', uuid: uuidNeuron }">
+			<template slot="image">
+				<div class="handle handle-friend"></div>
+			</template>
 			<div class="handle handle-friend"></div>
 		</drag>
 		<svg v-show="draggingHandle" preserveAspectRatio="none" class="svg-line" xmlns="http://www.w3.org/2000/svg">
@@ -71,10 +80,19 @@ export default {
 	},
 	computed: {
 		iconLink() {
-			return `http://localhost:3000/static/icons/${this.neuron.icon.uuid}.${this.neuron.icon.extension}`;
+			if (this.neuron && this.neuron.icon) return `http://localhost:3000/static/icons/${this.neuron.icon.uuid}.${this.neuron.icon.extension}`;
+			else return false;
 		},
 		isItFontAwesome() {
-			return ( this.neuron && this.neuron.icon && this.neuron.icon.extension ) ? false : true;
+			if (this.neuron) {
+				//return ( (this.neuron.icon && this.neuron.icon.extension) || this.neuron.neuron.iconFontAwesome) ? false : true;
+				if (this.neuron.icon) return false;
+				if (this.neuron.neuron.iconFontAwesome) {
+					return true;
+				}
+				else return false;
+			}
+			else return false
 		},
 		fontAwesomeIcon() {
 			return ( this.neuron && this.neuron.neuron.iconFontAwesome ) ? this.neuron.neuron.iconFontAwesome : "star"
@@ -89,7 +107,7 @@ export default {
 			return this.neuron ? this.neuron.neuron.name : ""
 		},
 		neuronColor() {
-			return (this.neuron && this.neuron.neuron.color) ? "#"+this.neuron.neuron.color : "blue";
+			return (this.neuron && this.neuron.neuron.color) ? "#"+this.neuron.neuron.color : "#7fa3ff";
 		}
 	},
 	methods: {
@@ -179,15 +197,18 @@ export default {
 .neuron-small-container {
 	position: relative;
 	z-index: 10;
+	&:hover {
+		opacity: 1 !important;
+	}
 
 	.neuron-content-container {
 		display: grid;
 		grid-template-columns: auto 1fr;
-		border: 2px solid blue;
+		border: 2px solid #7fa3ff;
 		border-radius: 50px;
 		height: 30px;
 		overflow: hidden;
-		background: blue;
+		background: #7fa3ff;
 		color: white;
 		font-weight: bold;
 		padding: 0 10px 0 5px;
@@ -221,10 +242,10 @@ export default {
 		}
 
 		&.no-dropzone {
-			background: red !important;
+			background: #EB5757 !important;
 		}
 		&.dropzone {
-			background: green !important;
+			background: #6FCF97 !important;
 		}
 	}
 
@@ -243,21 +264,20 @@ export default {
 		border-radius: 50%;
 		z-index: 1000;
 		cursor: pointer;
+		border: 2px solid;
+		background-color: white;
 
 		&.handle-friend {
-			background: green;
-			left: -8px;;
-			top: 50%;
+			left: -7px;;
+			top: 40%;
 		}
 		&.handle-children {
-			background: red;
 			right: 50%;
-			bottom: -8px;
+			bottom: -6px;
 		}
 		&.handle-parent {
-			background: purple;
 			right: 50%;
-			top: -8px
+			top: -6px
 		}
 	}
 
@@ -277,8 +297,9 @@ export default {
 		right: 10px;
 
 		.ui.button {
-			font-size: 8px;
-			background: blue;
+			padding: 5px;
+			font-size: 10px;
+			background: #6256f3;
 			color: white;
 		}
 	}

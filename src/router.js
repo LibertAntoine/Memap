@@ -15,7 +15,11 @@ const routes = [
   {
     path: '/Network/:uuidNeuron',
     component:  NetworkPage,
-    name: 'NetworkPage'
+    name: 'NetworkPage',
+		meta: {
+			title: 'Network',
+			icon: 'sitemap'
+		}
   }, 
   {
     path: '/Document',
@@ -26,6 +30,10 @@ const routes = [
     path: '/Document/:id',
     component:  DocumentPage,
     name: 'Document',
+		meta: {
+			title: 'Document',
+			icon: 'file alternate'
+		}
   },
   {
     path: '/Test',

@@ -49,8 +49,8 @@ export default {
 			console.log('File Menu', this.file)
 		},
 		fileIcon(extension) {
-			if (extension.match(/(xls)/g)) return 'file excel outline green';
- 			else if (extension.match(/(png)|(jpg)|(gif)/g)) return 'image outline orange'
+			if (extension.match(/(xls)/g)) return 'file excel outline';
+ 			else if (extension.match(/(png)|(jpg)|(gif)/g)) return 'image outline'
 			else return 'file'
 		},
 		fileName(file) {

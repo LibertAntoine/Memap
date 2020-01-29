@@ -2,7 +2,7 @@
 	<div class="box-container">
 		<div class="box-header">
 			<div class="box-icon-container">
-				<div @click="toggle" class="icon-container" :style="{ backgroundColor: color }">
+				<div @click="toggle" class="icon-container" :style="{ color: color }">
 						<img v-if="iconLink" :src="iconLink" alt="">
 						<div v-else>
 							<i class="icon" :class="fontAwesomeIcon"></i>
@@ -60,7 +60,7 @@ export default {
 
 			.icon-container {
 				position: absolute;
-				background: blue;
+				background: white;
 				width: 50px;
 				height: 50px;
 				border-radius: 50%;
@@ -69,9 +69,9 @@ export default {
 				transform: translate(-50%, -50%);
 				display: table-cell;
 				line-height: 50px;
-				font-size: 1.5em;
+				font-size: 24px;
 				box-shadow: 0 1px 10px #00000070;
-				color: white;
+				color: #6256f3;
 				font-size: 18px;
 				cursor: pointer;
 
@@ -110,6 +110,7 @@ export default {
 		width: @content-width;
 		padding: 38px 0 12px;
 		background: white;
+		border-radius: 10px;
 	}
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="box-neuron-properties-container">
-		<vue-draggable-resizable :resizable="false" :x="50" :y="30">
+		<vue-draggable-resizable :resizable="false" :x="50" :y="200">
 			<Box :title="neuronName" :icon-link="iconLink" :font-awesome-icon="fontAwesomeIcon" :color="neuronColor">
 				<div class="rename-container" v-if="inputName"><input @keypress.esc="toggleInput" @focusout="rename" @keypress.enter="rename" type="text" v-model="neuron.neuron.name"></div>
 				<div class="neuron-button-container">
@@ -31,7 +31,6 @@
 				<div class="neuron-files-container">
 					<InlineFile v-for="(file, id) in files" :key="id" :file="file" />
 				</div>
-				<button @click="logNeuron" >Log Neuron in console</button>
 			</Box>
 		</vue-draggable-resizable>
 	</div>
@@ -101,7 +100,7 @@ export default {
 			return this.neuron ? this.neuron.neuron.name : ""
 		},
 		neuronColor() {
-			return (this.neuron && this.neuron.neuron.color) ? "#"+this.neuron.neuron.color : "blue";
+			return (this.neuron && this.neuron.neuron.color) ? "#"+this.neuron.neuron.color : "#7fa3ff";
 		}
 	},
 	methods: {
@@ -173,13 +172,22 @@ export default {
 		}
 
 		/* Overriding Semantic UI */
-		.ui.button {
+		.ui.button, .ui.button:focus {
 			font-size: 12px;
+			background-color: white;
+			color: #8b919a;
+			box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.22);
+
+			&.selected {
+				background-color: #6256f3;
+				color: white;
+			}
+			
+		}
 
 			.trash {
 				color: red;
 			}
-		}
 	}
 
 	.neuron-tags-container {

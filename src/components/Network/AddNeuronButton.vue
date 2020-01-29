@@ -41,11 +41,10 @@ export default {
 	display: grid;
 	grid-template-columns: 1fr auto;
   cursor: pointer;
-  border: 2px solid blue;
-  padding: 5px 8px;
+  padding: 5px 8px 5px 12px;
   font-size: 1em;
   border-radius: 50px;
-  background: blue;
+  background: #6256f3;
   color: white;
 
 	.icon-container {
