@@ -6,17 +6,8 @@
     </div>
    <div class='btn-title' v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><h2> {{title}} <button class="ui button" v-if="hover" @click="renameState = true">Modifier</button></h2></div>
    <div class='btn-title' v-else><input v-model="titleRename" @keypress.enter="rename" /><button class="ui button" @click="noRemane">Annuler</button></div>
-   <div class='content' v-if="!edition">
+   <div class='content'>
      <tinymce :InitalContent="content" :uuid="uuid"></tinymce>
-      <div class="edit-option">
-        <button class="ui button primary btn-edit" @click="endEdit">Terminer la modification</button>
-      </div>
-   </div>
-   <div class='content' v-else>
-     <div id="content-view" v-html="content"></div>
-     <div class="edit-option">
-        <button class="ui button primary btn-edit" @click="edition = false">Modifier le document</button>
-     </div>
    </div>
 </div>
 
@@ -35,13 +26,14 @@
       titlerename: "",
       content: "",
       uuid: "",
-      edition: true,
+
       hover: false,
       renameState: false
     }
   },
    mounted () {
      this.loadDocument();
+     
     },
    methods: {
      loadDocument: function () {
@@ -86,11 +78,8 @@
       noRemane: function () {
         this.titleRename = this.title;
         this.renameState = false;
-    },
-        endEdit: function () {
-        this.loadDocument();
-        this.edition = true;
     }
+       
 
    }
  }
@@ -101,16 +90,10 @@
   margin-left: 5%;
   margin-right: 5%;
   margin-top: 20px;
+  margin-bottom: 200px;
   text-align: left;
 }
-.btn-edit {
-  position:absolute;
-  right: 7%
-}
 
-.edit-option {
-  margin-top : 15px;
-}
 
 #menu-option {
   margin-top: 20px;
@@ -119,9 +102,4 @@
   padding-left: 20px;
 }
 
-#content-view {
-  border: 1px solid rgba(128, 128, 128, 0.185);
-  padding: 20px;
-  border-radius: 5px; 
-}
 </style>
