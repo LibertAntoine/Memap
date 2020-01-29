@@ -4,12 +4,18 @@ import VueResource from 'vue-resource'
 import VueRouter from 'vue-router' 
 import UUID from 'vue-uuid';
 import SuiVue from 'semantic-ui-vue'; 
+import vuetwemoji from 'vue-twemoji'
+
+
+import VueDragDrop from 'vue-drag-drop'
 
 import store from './store'
 
 Vue.use(UUID);
 Vue.use(VueResource);
 Vue.use(SuiVue);
+Vue.use(VueDragDrop);
+Vue.use(vuetwemoji)
 
 
 Vue.config.productionTip = false

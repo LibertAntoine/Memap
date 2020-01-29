@@ -1,10 +1,10 @@
 /* OPTIMIZE this updates all the time for unknown reasons */
 <template>
-	<div @click.ctrl.exact.prevent="toggleSelection" @click.alt.exact="logNeuron" class="neuron-container">
+	<div @click.ctrl.exact.prevent="toggleSelection" @click.alt.exact="logNeuron" class="neuron-small-container">
 		<router-link :to="{ name: 'NetworkPage', params: {uuidNeuron} }" tag="a" @dblclick.native.prevent event="click">
 			<drop @drop="handleDrop" @dragover="handleDragEnter" @dragleave="handleDragLeave" @dragenter="handleDragEnter">
-				<div class="neuron-content-container" :class="{ dropzone: isValidDropZone, 'no-dropzone': isForbidenDropZone }" :style="{ borderColor: (this.neuron && this.neuron.selected) ? 'red' : neuronColor }" >
-					<div class="neuron-icon-container" :style="{ backgroundColor: neuronColor }">
+				<div class="neuron-content-container" :style="{ backgroundColor: neuronColor, borderColor: (this.neuron && this.neuron.selected) ? 'red' : neuronColor  }" :class="{ dropzone: isValidDropZone, 'no-dropzone': isForbidenDropZone }">
+					<div class="neuron-icon-container">
 						<div v-if="isItFontAwesome">
 							<i class="icon" :class="fontAwesomeIcon"></i>
 						</div>
@@ -44,7 +44,7 @@ import NeuronAPI from '@/services/neuron'
 import NetworkAPI from '@/services/network'
 
 export default {
-	name: 'Neuron',
+	name: 'NeuronSmallFull',
 	props: ['uuidNeuron'],
 	data() {
 		return {
@@ -108,7 +108,7 @@ export default {
 			this.coordsMouse.x = nativeEvent.clientX;
 			this.coordsMouse.y = nativeEvent.clientY;
 		},
-		stopDragging(transferData, nativeEvent) {
+		stopDragging() {
 			this.draggingHandle = false;
 
 			/* May be necessary
@@ -176,7 +176,7 @@ export default {
 </script>
 
 <style lang="less">
-.neuron-container {
+.neuron-small-container {
 	position: relative;
 	z-index: 10;
 
@@ -184,18 +184,20 @@ export default {
 		display: grid;
 		grid-template-columns: auto 1fr;
 		border: 2px solid blue;
-		border-radius: 10px;
-		height: 40px;
+		border-radius: 50px;
+		height: 30px;
 		overflow: hidden;
-		background: white;
+		background: blue;
+		color: white;
+		font-weight: bold;
+		padding: 0 10px 0 5px;
 
 		.neuron-icon-container {
 			overflow: hidden;
-			background: blue;
 			padding: 5px;
-			width: 40px;
-			font-size: 20px;
-			line-height: 23px;
+			width: 30px;
+			font-size: 13px;
+			line-height: 17px;
 			vertical-align: middle;
 
 			img {
@@ -212,16 +214,17 @@ export default {
 			place-items: stretch;
 
 			.name {
-				padding: 0 10px;
 				align-self: center;
+				text-align: left;
+				font-size: 10px;
 			}
 		}
 
 		&.no-dropzone {
-			background: red;
+			background: red !important;
 		}
 		&.dropzone {
-			background: green;
+			background: green !important;
 		}
 	}
 

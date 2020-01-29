@@ -1,17 +1,17 @@
 <template>
 	<div class="test-container">
-		<BoxSelection :uuid-neuron="'8f712c97-87de-466d-922e-d6da230f54e2'"/>
+		<BoxNeuronProperties :uuid-neuron="'8f712c97-87de-466d-922e-d6da230f54e2'"/>
 		<!-- <BoxSelection /> -->
 		<!-- <BoxSelection /> -->
 	</div>
 </template>
 
 <script>
-import BoxSelection from '../components/BoxSelection'
+import BoxNeuronProperties from '../components/Box/BoxNeuronProperties'
 export default {
 	name: 'TestPage',
 	components: {
-		BoxSelection
+		BoxNeuronProperties
 	}
 }
 </script>

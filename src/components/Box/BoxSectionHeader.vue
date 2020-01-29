@@ -17,6 +17,7 @@ export default {
 
 <style lang="less">
 .box-section-title-container {
+	margin: 15px 0 10px;
 	display: grid;
 	justify-content: stretch;
 

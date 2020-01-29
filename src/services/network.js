@@ -30,6 +30,54 @@ export default {
 					reject(err);
 				});
 		})
+	},
+	getSelectedNeurons() {
+		return new Promise((resolve, reject) => {
+			/* NOTE: Getting surrounding */ 
+			Api().get(`/network/selected`)
+				.then(response => {
+					resolve( response.data )
+				})
+				.catch(err => {
+					console.log(err);
+					reject(err);
+				});
+		})
+	},
+	createRelationship(type, from, to) {
+		return new Promise((resolve, reject) => {
+			Api().post('/network', {
+				type,
+				uuidFrom: from,
+				uuidTo: to
+			})
+			.then(response => {
+				resolve(response)
+			})
+			.catch(err => {
+				console.log(err);
+				reject(err)
+			});
+		})
+	},
+	deleteRelationship(type, from, to) {
+		return new Promise((resolve, reject) => {
+		Api().delete(`/network`,
+			{ 
+				data: {
+					type: type,
+					uuidFrom: from,
+					uuidTo: to
+				}
+			})
+			.then(response => {
+				resolve(response)
+			})
+			.catch(err => {
+				console.log(err);
+				reject(err)
+			});
+		})
 	}
 }
 

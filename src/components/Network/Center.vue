@@ -15,3 +15,10 @@ export default {
 	props: ['uuidNeuron']
 }
 </script>
+
+<style>
+.center-container .handle-friend {
+ 		right: -8px !important;
+ 		left: unset !important;
+}
+</style>

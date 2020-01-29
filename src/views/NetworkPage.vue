@@ -1,11 +1,15 @@
 <template>
 	<div class="network-page-container">
+		<BoxNeuronProperties :uuid-neuron="uuidCenter"/>
+		<BoxNeuronSelection />
 		<Network :uuid-center="uuidCenter" />
 	</div>
 </template>
 
 <script>
 import Network from '../components/Network/Network'
+import BoxNeuronProperties from '../components/Box/BoxNeuronProperties'
+import BoxNeuronSelection from '../components/Box/BoxNeuronSelection'
 
 export default {
 	name:'NetworkPage',
@@ -15,7 +19,7 @@ export default {
 		}
 	},
 	components: {
-		Network
+		Network, BoxNeuronProperties, BoxNeuronSelection
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.uuidCenter = to.params.uuidNeuron
@@ -24,3 +28,14 @@ export default {
 	}
 }
 </script>
+
+<style lang="less">
+.network-page-container {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+
+	.network-container {
+		grid-column-start: 2;
+	}
+}
+</style>
