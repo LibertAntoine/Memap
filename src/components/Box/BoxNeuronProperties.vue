@@ -19,6 +19,12 @@
 				<div class="neuron-tags-container">
 					<Tag v-for="(tagname, id) in tags" :name="tagname.name" :key="id" @remove-tag="removeTag(tagname.name)"/>
 				</div>
+				<BoxSectionHeader :title="'Documents'">
+				<RoundButton :icon="'plus'" :color="neuronColor"/>
+				</BoxSectionHeader>
+				<div class="neuron-documents-container">
+					<InlineDocument v-for="(document, id) in documents" :key="id" :document="document" />
+				</div>
 				<BoxSectionHeader :title="'Files'">
 				<RoundButton :icon="'plus'" :color="neuronColor"/>
 				</BoxSectionHeader>
@@ -36,6 +42,7 @@
 import Box from './Box'
 import Tag from '../Tag'
 import InlineFile from '../InlineFile'
+import InlineDocument from '../InlineDocument'
 import BoxSectionHeader from './BoxSectionHeader'
 import RoundButton from '../RoundButton'
 import NeuronPin from '../NeuronProperties/NeuronPin'
@@ -63,7 +70,7 @@ export default {
 		Box, BoxSectionHeader, RoundButton,
 		NeuronDelete, NeuronPin,
 		NeuronRename, NeuronFavorite, Tag,
-		VueDraggableResizable, InlineFile
+		VueDraggableResizable, InlineFile, InlineDocument
 	},
 	computed: {
 		iconLink() {
@@ -71,6 +78,9 @@ export default {
 		},
 		fontAwesomeIcon() {
 			return ( this.neuron && this.neuron.neuron.iconFontAwesome ) ? this.neuron.neuron.iconFontAwesome : "star"
+		},
+		documents() {
+			return this.neuron ? this.neuron.documents : []
 		},
 		files() {
 			return this.neuron ? this.neuron.files : []
@@ -177,7 +187,7 @@ export default {
 		padding-left: 5px;
 	}
 
-	.neuron-files-container {
+	.neuron-files-container, .neuron-documents-container {
 		padding: 0 20px;
 	}
 }
