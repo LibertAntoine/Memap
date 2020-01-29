@@ -1,6 +1,11 @@
 <template>
     <div>
-
+      <div class="edit-option" v-if="edition">
+        <button class="ui button primary btn-edit-top" @click="endEdit">Terminer la modification</button>
+      </div>
+     <div class="edit-option" v-else>
+        <button class="ui button primary btn-edit-top" @click="startEdit">Modifier le document</button>
+     </div>
 
      <editor id="document" ref="tm"
        api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
@@ -69,7 +74,7 @@
    methods: {
      endEdit: function () {
        this.edition = false;
-       //this.$refs.tm.editor.setMode('readonly');
+       this.$refs.tm.editor.setMode('readonly');
        $('.tox-editor-header').hide()
        this.$refs.tm.editor.dom.$('.refSupButton').hide()
     },
@@ -81,8 +86,6 @@
     },
 
      submit: function () { 
-      console.log(this.$refs.tm.editor)
-
        this.update = false;
         if(this.content == "") {
           this.content = '<p id="' + this.$uuid.v4() + '" class="mce"></p>'
@@ -119,16 +122,11 @@
      checkRef : function () {
        
         let urlRegex = /(https?:\/\/[a-z0-9A-Z/:%_+.,?!@&=-]+)#([a-z0-9A-Z/:%_+.,?!@&=-]+)/g;
-
         var refs = [...this.content.matchAll(urlRegex)];
         for (const ref of refs) {
           var loader = this.$refs.tm.editor.dom.create('img', {'src' : this.loader, 'height' : '100'})
           let element = this.$refs.tm.editor.dom.$('p:contains("' + ref[0] + '")')
-          if(this.$refs.tm.editor.mode.isReadOnly() == true) {
             element.replaceWith(loader);
-          } else {
-            element.replaceWith(loader);
-          }
           if(ref[0].match(window.location.origin + '/Document/')) { 
             this.searchIntern(loader, ref)
           } else {
@@ -148,6 +146,10 @@
               var urlLink = this.$refs.tm.editor.dom.create('button', {'class' : 'ui button refSource refButton'}, '#' + ref[1]);
               var suppButton = this.$refs.tm.editor.dom.create('button', {'class' : 'ui button refSupButton refButton'}, '<i class="x icon"></i>');
               
+              if(this.$refs.tm.editor.mode.isReadOnly() == true) {
+                $(suppButton).hide()
+              }
+
               this.$refs.tm.editor.dom.bind(suppButton, 'click', (e) => {
                 e.toElement.parentNode.parentNode.parentNode.parentNode.remove();
               });
@@ -221,7 +223,6 @@
                     ],
                     onSubmit: (api) => {
                       if(api.getData().checkboxNew == true) {
-                        console.log(ref[1], ref[2], response.body.content, this.uuid)
                          this.$http.put('http://localhost:3000/reference/', 
                                 {
                                   'url' : ref[1],
@@ -358,8 +359,9 @@
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
       this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
       this.content = this.InitalContent;
-      console.log(this.content)
-      this.checkRef()
+      setTimeout(() => {
+        this.checkRef()
+      }, 500);
     },
       
 
@@ -586,7 +588,9 @@
   margin-top : 15px;
 }
 
-
+.btn-edit-top {
+  margin-bottom: 10px !important;
+}
 </style>
 
     

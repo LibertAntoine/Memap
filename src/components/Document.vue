@@ -112,7 +112,7 @@ text-align:center;
 
 .title-button {
   position:absolute; 
-  right: 30%
+  right: 10%;
 }
 
 </style>
