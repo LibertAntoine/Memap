@@ -4,8 +4,8 @@
     <div id="menu-option">
      <router-link id="btn-menu" class="ui button left labeled icon" tag="button" :to="{name:'DocumentList'}"><i class="left arrow icon"></i>Retour à la liste des documents</router-link>
     </div>
-   <div class='btn-title' v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><h2> {{title}} <button class="ui button" v-if="hover" @click="renameState = true">Modifier</button></h2></div>
-   <div class='btn-title' v-else><input v-model="titleRename" @keypress.enter="rename" /><button class="ui button" @click="noRemane">Annuler</button></div>
+   <div class='btn-title' v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><h2 class="doc-title"> {{title}} <button class="ui button title-button" v-if="hover" @click="renameState = true">Modifier</button> </h2></div>
+   <div class='btn-title' v-else><input class="doc-title" v-model="titleRename" @keypress.enter="rename" /><button class="ui button title-button" @click="noRemane">Annuler</button></div>
    <div class='content'>
      <tinymce :InitalContent="content" :uuid="uuid"></tinymce>
    </div>
@@ -100,6 +100,19 @@
   margin-bottom: 20px;
   text-align:left;
   padding-left: 20px;
+}
+
+.btn-title {
+  position:relative;
+}
+
+.doc-title {
+text-align:center;
+}
+
+.title-button {
+  position:absolute; 
+  right: 30%
 }
 
 </style>
