@@ -80,11 +80,9 @@ ref {
 
 .mce-content-body {
     padding: 10px;
+    
 }
 
-.x {
-    margin-right: -2px !important;
-}
 
 .versionDisplay {
     margin-left : -14px;
@@ -108,3 +106,32 @@ ref {
 .referenceText {
     text-align: justify;
 }
+
+.no-referencing {
+    color : rgba(48, 48, 48, 0.438) !important;
+}
+
+.no-referencing {
+    border: 0px solid black ;
+}
+
+.referencing {
+    color : rgb(0, 0, 0) !important;
+}
+
+.referencing-hover {
+    border: 1px black solid !important;
+    border-radius: 5px;
+}
+
+.referencing-clicked {
+    background-color: rgb(156, 185, 26) !important;
+}
+
+.tox-form__group[role="presentation"] {
+    overflow-wrap: break-word;
+    border: 1px solid rgba(99, 99, 99, 0.438) !important;
+    padding : 5px;
+    border-radius: 5px;
+}
+
