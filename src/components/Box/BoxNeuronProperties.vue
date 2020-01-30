@@ -10,7 +10,7 @@
 					</div>
 					<div class="align-right">
 						<NeuronRename v-on:click.native="toggleInput" class="align-right"/>
-						<NeuronDelete class="align-right"/>
+						<NeuronDelete v-on:click.native="deleteNeuron" class="align-right"/>
 					</div>
 				</div>
 				<BoxSectionHeader :title="'Tags'">
@@ -76,7 +76,7 @@ export default {
 			return (this.neuron && this.neuron.icon) ? `http://localhost:3000/static/icons/${this.neuron.icon.uuid}.${this.neuron.icon.extension}` : null;
 		},
 		fontAwesomeIcon() {
-			return ( this.neuron && this.neuron.neuron.iconFontAwesome ) ? this.neuron.neuron.iconFontAwesome : "star"
+			return ( this.neuron && this.neuron.neuron.iconFontAwesome ) ? this.neuron.neuron.iconFontAwesome : "sliders horizontal"
 		},
 		documents() {
 			return this.neuron ? this.neuron.documents : []
@@ -123,6 +123,11 @@ export default {
 		toggleSelection() {
 			NeuronAPI.toggleSelection(this.uuidNeuron);
 			this.fetchNeuronData();
+		},
+		deleteNeuron() {
+			debugger
+			NeuronAPI.deleteNeuron(this.uuidNeuron);
+			//this.fetchNeuronData();
 		},
 		async fetchNeuronData() {
 			this.neuron = await NeuronAPI.getNeuron(this.uuidNeuron);
