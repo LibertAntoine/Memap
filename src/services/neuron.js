@@ -16,6 +16,19 @@ export default {
 			});
 		})
 	},
+	deleteNeuron(uuidNeuron) {
+		return new Promise((resolve, reject) => {
+			Api().delete(`/neuron/${uuidNeuron}`)
+			.then(response => {
+				console.log(response)
+				resolve(response.data)
+			})
+			.catch(err => {
+				console.log(err);
+				reject(err)
+			});
+		})
+	},
 	createNeuron(name) {
 		return new Promise((resolve, reject) => {
 			Api().post('/neuron', {

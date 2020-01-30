@@ -4,10 +4,10 @@
 	<div class="neuron-list">
 		<NeuronSmallFull v-for="(neuron, id) in neurons" :key="id" :uuid-neuron="neuron"/>
 	</div>
-    <div id="menu-option">
+    <!-- <div id="menu-option">
      <router-link id="btn-menu" class="ui button left labeled icon" tag="button" :to="{name:'DocumentList'}"><i class="left arrow icon"></i>Retour à la liste des documents</router-link>
-    </div>
-   <div class='btn-title' v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><h2 class="doc-title"> {{title}} <button class="ui button title-button" v-if="hover" @click="renameState = true">Modifier</button> </h2></div>
+    </div> -->
+   <div class='btn-title' v-if="!renameState"  @mouseover="hover = true" @mouseleave="hover = false"><span class="doc-title"> {{title}} <button class="ui button title-button" v-if="hover" @click="renameState = true">Modifier</button> </span></div>
    <div class='btn-title' v-else><input class="doc-title" v-model="titleRename" @keypress.enter="rename" /><button class="ui button title-button" @click="noRemane">Annuler</button></div>
    <div class='content'>
      <tinymce :InitalContent="content" :uuid="uuid"></tinymce>
@@ -106,13 +106,12 @@ import NeuronSmallFull from './Neuron/NeuronSmallFull'
 .document-container {
 	.neuron-list {
 		display: flex;
-		padding: 25px 25px;
+		padding: 15px 25px;
 	}
 
 	.content {
   	margin-left: 5%;
   	margin-right: 5%;
-  	margin-top: 20px;
   	margin-bottom: 200px;
   	text-align: left;
 	}
@@ -126,16 +125,25 @@ import NeuronSmallFull from './Neuron/NeuronSmallFull'
 	}
 
 	.btn-title {
-  	position:relative;
+  	position: absolute;
+		top: 65px;
+		left: 50%;
+		transform: translateX(-50%);
+
+		.doc-title {
+			text-align:center;
+			font-size: 2em;
+			font-weight: bold;
+			position: relative;
+		}
+
+		.title-button {
+  		position:absolute; 
+  		right: -100px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
 	}
 
-	.doc-title {
-		text-align:center;
-	}
-
-	.title-button {
-  	position:absolute; 
-  	right: 10%;
-	}
 }
 </style>

@@ -57,6 +57,6 @@ export default {
 <style lang="less">
 .box-selection-container .neuron-container {
 	display: inline-block;
-	margin: 10px 0;
+	margin: 10px 10px;
 }
 </style>

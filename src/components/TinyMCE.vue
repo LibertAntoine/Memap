@@ -17,7 +17,7 @@
         @onInit="initEventEditor"
         :init="{
          setup:addRefPlugin,
-         height:1000,
+         height:800,
          menubar: true,
          content_css : '/mce_style.css, https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css',
          extended_value_elements:'+@[data-options]',
@@ -592,7 +592,3 @@
   margin-bottom: 10px !important;
 }
 </style>
-
-    
-    
-    

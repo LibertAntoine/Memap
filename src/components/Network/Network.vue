@@ -104,7 +104,7 @@ export default {
 	"parents friends"
 	"center friends"
 	"children friends"
-	"history empty";
+	"history history";
 	position: absolute;
 	width: 75%;
 	height: 100%;
@@ -132,6 +132,8 @@ export default {
 	}
 	.history-container {
 		grid-area: history;
+		justify-self: left;
+		/* width: 100%; */
 	}
 }
 </style>
