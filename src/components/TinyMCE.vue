@@ -17,20 +17,20 @@
         @onInit="initEventEditor"
         :init="{
          setup:addRefPlugin,
-         height:1000,
+         height:800,
          menubar: true,
          content_css : '/mce_style.css, https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.css',
          extended_value_elements:'+@[data-options]',
          importcss_append: true,
          plugins: [
-           'advlist autolink lists link image charmap print preview anchor reference',
-           'searchreplace visualblocks code fullscreen noneditable',
-           'insertdatetime media table paste code help wordcount importcss'
+           'charmap casechange bbcode advlist emoticons autolink codesample lists link image charmap print preview anchor reference',
+           'searchreplace visualblocks code fullscreen formatpainter noneditable checklist',
+           'insertdatetime media table paste code template visualblocks help wordcount searchreplace importcss advtable'
          ],
          toolbar:
-           'undo redo | formatselect | bold italic backcolor | \
+           'undo redo | formatselect | reference | bold italic backcolor | visualblocks | template | searchreplace | imagetools | formatpainter | emoticons | codesample | checklist |\
            alignleft aligncenter alignright alignjustify | \
-           bullist numlist outdent indent | removeformat | help | reference',
+           bullist numlist outdent indent | removeformat | help | charmap',
        }"
        ></editor>
       <div class="edit-option" v-if="edition">
