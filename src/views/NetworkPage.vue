@@ -2,6 +2,7 @@
 	<div class="network-page-container">
 		<BoxNeuronProperties :uuid-neuron="uuidCenter"/>
 		<BoxNeuronSelection />
+		<BoxNeuronFavorite />
 		<Network :uuid-center="uuidCenter" />
 	</div>
 </template>
@@ -10,6 +11,7 @@
 import Network from '../components/Network/Network'
 import BoxNeuronProperties from '../components/Box/BoxNeuronProperties'
 import BoxNeuronSelection from '../components/Box/BoxNeuronSelection'
+import BoxNeuronFavorite from '../components/Box/BoxNeuronFavorite'
 
 export default {
 	name:'NetworkPage',
@@ -19,7 +21,7 @@ export default {
 		}
 	},
 	components: {
-		Network, BoxNeuronProperties, BoxNeuronSelection
+		Network, BoxNeuronProperties, BoxNeuronSelection, BoxNeuronFavorite
 	},
 	beforeRouteUpdate(to, from, next) {
 		this.uuidCenter = to.params.uuidNeuron

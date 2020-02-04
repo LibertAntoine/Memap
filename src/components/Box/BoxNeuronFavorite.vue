@@ -1,8 +1,8 @@
 <template>
-	<div class="box-selection-container">
-		<vue-draggable-resizable :resizable="false" :x="50" :y="130" :drag-handle="'.box-header'" :enable-native-drag="true">
-			<Box :title="'Selection'" :font-awesome-icon="'thumbtack'">
-				<Neuron v-for="(uuid, id) in selected" :key="id" :uuid-neuron="uuid"></Neuron>
+	<div class="box-favorite-container">
+		<vue-draggable-resizable :resizable="false" :x="50" :y="430" :drag-handle="'.box-header'" :enable-native-drag="true">
+			<Box :title="'Favorites'" :font-awesome-icon="'star'">
+				<Neuron v-for="(uuid, id) in favorites" :key="id" :uuid-neuron="uuid"></Neuron>
 			</Box>
 		</vue-draggable-resizable>
 	</div>
@@ -24,8 +24,7 @@ export default {
 		return {
 			polling: null,
 			open: true,
-			icon: "👽",
-			selected: []
+			favorites: []
 		}
 	},
 	components: {
@@ -33,15 +32,15 @@ export default {
 		VueDraggableResizable
 	},
 	methods: {
-		fetchSelectedNeuron() {
-			NetworkAPI.getSelectedNeurons().then( data => {
-				this.selected = data;
+		fetchFavoritesNeuron() {
+			NetworkAPI.getFavoriteNeurons().then( data => {
+				this.favorites = data;
 			}).catch(err => console.log(err));
 		},
 		initFetchService() { 
-			this.fetchSelectedNeuron();
+			this.fetchFavoritesNeuron();
 			this.polling = setInterval(() => {
-				this.fetchSelectedNeuron();
+				this.fetchFavoritesNeuron();
 			}, 1000)
 		}
 	},
@@ -55,7 +54,7 @@ export default {
 </script>
 
 <style lang="less">
-.box-selection-container .neuron-container {
+.box-favorite-container .neuron-container {
 	display: inline-block;
 	margin: 10px 10px;
 }

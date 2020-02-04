@@ -34,19 +34,21 @@ export default {
 <style lang="less">
 .friends-container {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 40px;
+	grid-template-areas: "neurons" "addbutton";
 
 	.neurons {
 		text-align: left;
 
 		.neuron-container {
-			display: inline-block;
-			margin: 10px 0;
+			display: block;
+			margin: 10px;
 		}
 	}
 	.add-neuron-button-container {
 		align-self: center;
-		justify-self: left;
+		grid-area: addbutton;
+		justify-self: center;
 	}
 }
 </style>

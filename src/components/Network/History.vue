@@ -5,7 +5,7 @@
 				<div class="direction" v-if="id != neurons.length - 1">
 					<i class="icon arrow left"></i>
 				</div>
-				<NeuronSmallFull :uuid-neuron="neuron" :style="{ opacity: 1 - (id/5 + 0.1) }" />
+				<NeuronSmallFull :uuid-neuron="neuron" :style="{ opacity: 1 - (id/15 + 0.1) }" />
 			</div>
 		</div>
 	</div>
@@ -58,10 +58,16 @@ export default {
 	}
 
 	.neuron-and-arrow-container {
-
+		display: grid;
+		grid-template-columns: 40px 1fr; 
+		grid-template-areas: "arrow neuron";
+		align-items: center;
+		/*
 		& > * { 
 			display: inline-flex;
 		}
+		*/
+
 
 		& .direction {
 			font-size: 10px;
@@ -83,6 +89,7 @@ export default {
 
 	.neuron-small-container {
 		margin: 10px;
+		grid-area: neuron;
 	}
 }
 </style>

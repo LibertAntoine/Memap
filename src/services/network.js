@@ -31,9 +31,20 @@ export default {
 				});
 		})
 	},
+	getFavoriteNeurons() {
+		return new Promise((resolve, reject) => {
+			Api().get(`/network/favorites`)
+				.then(response => {
+					resolve( response.data )
+				})
+				.catch(err => {
+					console.log(err);
+					reject(err);
+				});
+		})
+	},
 	getSelectedNeurons() {
 		return new Promise((resolve, reject) => {
-			/* NOTE: Getting surrounding */ 
 			Api().get(`/network/selected`)
 				.then(response => {
 					resolve( response.data )
