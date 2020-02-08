@@ -1,6 +1,6 @@
 
-import DocumentPage from './DocumentPage.vue';
-import DocumentListPage from './DocumentListPage.vue';
+import DocumentPage from './views/DocumentPage.vue';
+import DocumentListPage from './views/DocumentListPage.vue';
 
 import NetworkPage from './views/NetworkPage.vue';
 import TestPage from './views/TestPage.vue';

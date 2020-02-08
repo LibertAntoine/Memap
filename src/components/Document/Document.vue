@@ -16,11 +16,9 @@
 
 </template>
 <script>
- import tinymce from './TinyMCE.vue'
-
-import NeuronSmallFull from './Neuron/NeuronSmallFull'
-
- import DocumentAPI from '../services/document'
+import tinymce from './TinyMCE.vue'
+import NeuronSmallFull from '../Neuron/NeuronSmallFull'
+import DocumentAPI from '@/services/document'
 
  export default {
    name: 'document',

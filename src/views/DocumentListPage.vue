@@ -3,7 +3,7 @@
 </template>
 
 <script>
- import DocumentList from './components/DocumentList.vue'
+ import DocumentList from '../components/Document/DocumentList.vue'
  export default {
    name: 'DocumentListPage',
     components:{

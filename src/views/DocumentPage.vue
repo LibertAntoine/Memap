@@ -3,7 +3,7 @@
 </template>
 
 <script>
- import Document from './components/Document.vue';
+ import Document from '../components/Document/Document.vue';
  export default {
    name: 'documentPage',
     components:{
