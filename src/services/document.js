@@ -9,7 +9,20 @@ export default {
 				})
 				.catch(err => {
 					console.log(err);
-
+					reject(err);
+				});
+		})
+	},
+	save(content, uuid) {
+		return new Promise((resolve, reject) => {
+			Api().put(`/document/`, {
+				content, uuid
+			})
+				.then(response => {
+					resolve(response)
+				})
+				.catch(err => {
+					console.log(err);
 					reject(err);
 				});
 		})

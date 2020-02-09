@@ -13,7 +13,6 @@
         v-model="content"
         model-events="change keydown blur focus paste"
         @onChange="submit"
-        @onKeyDown="keyDown"
         @onInit="initEventEditor"
         :init="{
          setup:setupMce,
@@ -43,10 +42,12 @@
 </template>
 
 <script>
- import Editor from '@tinymce/tinymce-vue'
  import '../../../public/mce_style.css'
- import autoSave from '@/services/tinyMce/mce_autoSave.js'
+
+ import Editor from '@tinymce/tinymce-vue'
  import EV from '@/services/tinyMce/mce_eventManager.js'
+
+ import autoSave from '@/services/tinyMce/mce_autoSave.js'
  import ref from '@/services/tinyMce/mce_referenceManager.js'
 
  export default {
@@ -68,31 +69,16 @@
   },
    created() {
       this.content = this.InitalContent;
-    }, 
-    mounted() {
-      
     },
    methods: {
-     submit: function () { 
-       this.update = false;
-        if(this.content == "") {
-          this.content = '<p id="' + this.$uuid.v4() + '" class="mce"></p>'
-        }
-
-       let refRegex = /<div [a-z0-9A-Z/:%_+.,?! @&"'=-]+ data-refurl="([a-z0-9A-Z/:%_+.,?!@&=-]+)" data-refid="([a-z0-9A-Z/:%_+.,?!@&=-]+)">[^*]+?<div class="refEnd">[^*]+?<\/div>[^*]+?<\/div>/g;
-       let copyContent = this.content;
-       copyContent = copyContent.replace(refRegex, '$1#$2');
-
-       autoSave.save(this, copyContent);
+    submit: function () { 
+       autoSave.save(this);
     },
-    keyDown: function (e) {
-    if(e.keyCode === 13) {
-       ref.checkRef(this)
-      }
-    },
+    
     setupMce: async function () {
       ref.addRefPlugin(this);
     },
+
     initEventEditor: function () {
       this.EV_endEdit()
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
@@ -101,7 +87,6 @@
       setTimeout(() => { ref.checkRef();}, 100);
     },
       
-
     identifyBlock: function (e) {
       e.target.dom.setAttribs(e.newBlock, {'id' : this.$uuid.v4(), 'class' : 'mce'} );
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
@@ -113,11 +98,7 @@
       elements[i].setAttribute('class', 'mce')
       this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
       }
-    },
-    
-
-
-
+    }
    }
  }
 </script>
