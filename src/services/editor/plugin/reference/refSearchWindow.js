@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import reference from '../reference.js'
+import reference from '@/services/reference.js'
 
 var referenceHovered;
 var referenceClicked;

@@ -1,5 +1,5 @@
 
-import reference from '../reference.js'
+import reference from '@/services/reference.js'
 
 var data;
 var ref;

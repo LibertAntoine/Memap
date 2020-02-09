@@ -9,10 +9,9 @@
 
      <editor id="document" ref="tm"
        api-key="fhq53ixwnobrri76unqbgc0g4846l3mi4s8aj4f30vemgrar"
-       :initialValue="InitalContent"
+        :initialValue="InitalContent"
         v-model="content"
         model-events="change keydown blur focus paste"
-        @onChange="submit"
         @onInit="initEventEditor"
         :init="{
          setup:setupMce,
@@ -45,10 +44,7 @@
  import '../../../public/mce_style.css'
 
  import Editor from '@tinymce/tinymce-vue'
- import EV from '@/services/tinyMce/mce_eventManager.js'
-
- import autoSave from '@/services/tinyMce/mce_autoSave.js'
- import ref from '@/services/tinyMce/mce_referenceManager.js'
+ import EV from '@/services/editor/mce_eventManager.js'
 
  export default {
    name: 'tinymce',
@@ -65,30 +61,32 @@
       content: "",
       update: true,
       edition: true,
+      activePlugins: ["reference", "autosave", "uuid"]
     }
   },
    created() {
       this.content = this.InitalContent;
     },
    methods: {
-    submit: function () { 
-       autoSave.save(this);
-    },
-    
-    setupMce: async function () {
-      ref.addRefPlugin(this);
+
+    setupMce: function () {
+      var plugins = {};
+      this.activePlugins.forEach(element => {
+        plugins[element] = require("@/services/editor/plugin/"+ element +"/plugin.js").default;
+        plugins[element].init(this);
+      });
+      this.activePlugins = plugins;
     },
 
     initEventEditor: function () {
       this.EV_endEdit()
-      this.$refs.tm.editor.once("newblock", this.identifyBlock)
-      this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
+      //this.$refs.tm.editor.once("newblock", this.identifyBlock)
+      //this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
       this.content = this.InitalContent;
-      setTimeout(() => { ref.checkRef();}, 100);
     },
-      
+     /* 
     identifyBlock: function (e) {
-      e.target.dom.setAttribs(e.newBlock, {'id' : this.$uuid.v4(), 'class' : 'mce'} );
+      
       this.$refs.tm.editor.once("newblock", this.identifyBlock)
     },
     identifyPaste: function (e) {
@@ -99,6 +97,7 @@
       this.$refs.tm.editor.once("pastepostprocess", this.identifyPaste)
       }
     }
+    */
    }
  }
 </script>
