@@ -1,6 +1,6 @@
 # :brain: Memap
 
- ![Memap](doc/readme-img/Bleu202TV.png?raw=true "Memap")
+ ![Memap](doc/readme-img/Memap.png?raw=true "Memap")
 
 ## Table of Contents
 
@@ -101,8 +101,8 @@ Realized between September 2019 and today.
 * Web scraping system for retrieving extracts from other websites.
 
 ## Contributors
-•	Antoine Libert – Editeur, Web Scraping
-•	Nicolas Liénart – Nodal Viewer
+* Antoine Libert – Editeur, Web Scraping.
+* Nicolas Liénart – Nodal Viewer.
 
 ## Dependencies
 ### Frontend Dependencies
