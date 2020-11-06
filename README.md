@@ -1,6 +1,8 @@
 # :brain: Memap
 
- ![Memap](doc/readme-img/Memap.png?raw=true "Memap")
+<p align="center">
+<img src="doc/readme-img//Memap.png?raw=true" width="45%" alt="Memap">
+</p>
 
 ## Table of Contents
 
