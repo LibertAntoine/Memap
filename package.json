@@ -16,7 +16,7 @@
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "semantic-ui-vue": "^0.8.1",
-    "tinymce": "^5.1.5",
+    "tinymce": "^5.9.0",
     "vue": "^2.6.10",
     "vue-context": "^5.0.0",
     "vue-drag-drop": "^1.1.4",
